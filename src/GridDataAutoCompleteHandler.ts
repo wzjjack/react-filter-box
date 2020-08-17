@@ -12,7 +12,7 @@ export default class GridDataAutoCompleteHandler extends BaseAutoCompleteHandler
         super();
 
         this.parseResult = null;
-
+        console.log(data, options, this.data, this.options)
         this.categories = _.map(this.options, f => {
             if (f.columnText) return f.columnText;
             return f.columnField
@@ -20,16 +20,16 @@ export default class GridDataAutoCompleteHandler extends BaseAutoCompleteHandler
     }
 
     hasCategory(category: string): boolean {
-      var found = _.find(this.options, f => {
-          return (category === f.columnField || category === f.columnText);
-      });
+        var found = _.find(this.options, f => {
+            return (category === f.columnField || category === f.columnText);
+        });
 
-      return found !== undefined;
-    } 
+        return found !== undefined;
+    }
 
     hasOperator(category: string, operator: string): boolean {
         return this.needOperators(category).indexOf(operator) >= 0;
-    } 
+    }
 
     needCategories() {
         return this.categories;
@@ -53,14 +53,14 @@ export default class GridDataAutoCompleteHandler extends BaseAutoCompleteHandler
     needValues(parsedCategory: string, parsedOperator: string): any[] {
         // parsedCategory = this.tryToGetFieldCategory(parsedCategory);
         var found = _.find(this.options, f => f.columnField == parsedCategory || f.columnText == parsedCategory);
-
         if (found != null && found.type == "selection" && this.data != null) {
             if (!this.cache[parsedCategory]) {
-                this.cache[parsedCategory] = _.chain(this.data).map(f => f[parsedCategory]).uniq().value();
+                this.cache[parsedCategory] = _.chain(this.data).map(f => {
+                    return f[found.columnField]
+                }).uniq().value();
             }
             return this.cache[parsedCategory];
         }
-
         if (found != null && found.customValuesFunc) {
             return found.customValuesFunc(parsedCategory, parsedOperator);
         }

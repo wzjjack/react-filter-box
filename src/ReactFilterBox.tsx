@@ -21,7 +21,7 @@ export default class ReactFilterBox extends React.Component<any, any> {
         autoCompleteHandler: null,
         onBlur: () => { },
         onFocus: () => { },
-        editorConfig: { },
+        editorConfig: {},
         strictMode: false
     };
 
@@ -47,17 +47,20 @@ export default class ReactFilterBox extends React.Component<any, any> {
     }
 
     onSubmit(query: string) {
-        var result = this.parser.parse(query);
-        if ((result as ParsedError).isError) {
-            return this.props.onParseError(result, { isValid: true });
-        } else if (this.props.strictMode) {
-            const validationResult = validateQuery(result as Expression[], this.parser.autoCompleteHandler);
-            if (!validationResult.isValid) {
-                return this.props.onParseError(result, validationResult);
+        if (this.props.onSubmit) {
+            this.props.onSubmit(query, this.props.options);
+        } else {
+            var result = this.parser.parse(query);
+            if ((result as ParsedError).isError) {
+                return this.props.onParseError(result, { isValid: true });
+            } else if (this.props.strictMode) {
+                const validationResult = validateQuery(result as Expression[], this.parser.autoCompleteHandler);
+                if (!validationResult.isValid) {
+                    return this.props.onParseError(result, validationResult);
+                }
             }
+            return this.props.onParseOk(result);
         }
-
-        return this.props.onParseOk(result);
     }
 
     onChange(query: string) {
@@ -113,5 +116,6 @@ export {
     GridDataAutoCompleteHandler,
     BaseAutoCompleteHandler,
     Option as AutoCompleteOption,
-    Expression
+    Expression,
+    FilterQueryParser
 };
