@@ -17,8 +17,8 @@ export default class SimpleResultProcessing extends BaseResultProcessing {
         switch (operator) {
             case "==": return row[field] == value;
             case "!=": return row[field] != value;
-            case "contains": return row[field].toLowerCase().indexOf(value.toLowerCase()) >= 0;
-            case "!contains": return row[field].toLowerCase().indexOf(value.toLowerCase()) < 0;
+            case "contains": return _.toLower(row[field]).indexOf(_.toLower(value)) >= 0;
+            case "!contains": return _.toLower(row[field]).indexOf(_.toLower(value)) < 0;
         }
 
         return false;
