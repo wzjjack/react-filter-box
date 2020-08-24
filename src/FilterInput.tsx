@@ -17,7 +17,7 @@ export default class FilterInput extends React.Component<any, any> {
     codeMirror: ExtendedCodeMirror;
     doc: CodeMirror.Doc;
     autoCompletePopup: AutoCompletePopup;
-
+    submitTimer: any;
     public static defaultProps: any = {
         onBlur: () => { },
         onFocus: () => { },
@@ -26,7 +26,6 @@ export default class FilterInput extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-
         if (props.editorConfig) {
             this.options = { ...props.editorConfig, mode: "filter-mode" }
         }
@@ -54,9 +53,13 @@ export default class FilterInput extends React.Component<any, any> {
     }
 
     private onSubmit(text: string) {
-        if (this.props.onSubmit) {
-            this.props.onSubmit(text);
-        }
+        if (this.submitTimer) clearTimeout(this.submitTimer);
+        this.submitTimer = setTimeout(() => {
+            if (this.props.onSubmit) {
+                this.props.onSubmit(text);
+            }
+        }, 500)
+
     }
 
     private codeMirrorRef(ref: { editor: ExtendedCodeMirror }) {
@@ -82,6 +85,7 @@ export default class FilterInput extends React.Component<any, any> {
 
         ref.editor.on("changes", () => {
             this.handlePressingAnyCharacter();
+            this.onSubmit(this.doc.getValue());
         })
 
         ref.editor.on("focus", (cm, e?) => {
@@ -90,7 +94,7 @@ export default class FilterInput extends React.Component<any, any> {
         })
 
         ref.editor.on("blur", (cm, e?) => {
-            // this.onSubmit(this.doc.getValue());
+            this.onSubmit(this.doc.getValue());
             this.props.onBlur(e)
         })
 
