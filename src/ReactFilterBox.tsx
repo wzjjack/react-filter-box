@@ -29,12 +29,6 @@ export default class ReactFilterBox extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-
-        var autoCompleteHandler = this.props.autoCompleteHandler ||
-            new GridDataAutoCompleteHandler(this.props.data, this.props.options)
-
-        this.parser.setAutoCompleteHandler(autoCompleteHandler);
-
         this.state = {
             isFocus: false,
             isError: false
@@ -84,6 +78,12 @@ export default class ReactFilterBox extends React.Component<any, any> {
 
     onFocus() {
         this.setState({ isFocus: true });
+    }
+    componentWillReceiveProps() {
+        var autoCompleteHandler = this.props.autoCompleteHandler ||
+            new GridDataAutoCompleteHandler(this.props.data, this.props.options)
+
+        this.parser.setAutoCompleteHandler(autoCompleteHandler);
     }
 
     render() {

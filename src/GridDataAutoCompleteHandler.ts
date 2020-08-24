@@ -12,7 +12,6 @@ export default class GridDataAutoCompleteHandler extends BaseAutoCompleteHandler
         super();
 
         this.parseResult = null;
-        console.log(data, options, this.data, this.options)
         this.categories = _.map(this.options, f => {
             if (f.columnText) return f.columnText;
             return f.columnField
