@@ -96,6 +96,7 @@ export default class ReactFilterBox extends React.Component<any, any> {
         }
 
         return <div className={className}>
+            <span className='search-filter-text'>Search & Filter:</span>
             <FilterInput
                 autoCompletePick={this.props.autoCompletePick}
                 customRenderCompletionItem={this.props.customRenderCompletionItem}
