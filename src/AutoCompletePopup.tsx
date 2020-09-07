@@ -127,13 +127,26 @@ export default class AutoCompletePopup {
             var text = doc.getRange(lastSeparatorPos, cursor);
 
             var values = hintValues;
+            var type = hintValues && hintValues[0] && hintValues[0].type;
             if (text) {
                 values = _.filter(hintValues, f => {
                     var value = f.value as string;
                     return _.isString(f.value) ? _.startsWith(value.toLowerCase(), text.toLowerCase()) : true;
                 })
             }
-
+            if (text && values && type == 'value') {
+                let fullyMatch = false;
+                for (const value of values) {
+                    if (value.value == text) {
+                        fullyMatch = true;
+                        break;
+                    }
+                }
+                if (!fullyMatch) values.unshift({
+                    value: text,
+                    type: 'value'
+                });
+            }
             return {
                 list: _.map(values, c => this.buildComletionObj(c)),
                 from: lastSeparatorPos,

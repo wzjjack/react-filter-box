@@ -46,7 +46,7 @@ export default class GridDataAutoCompleteHandler extends BaseAutoCompleteHandler
             return found.customOperatorFunc(parsedCategory);
         }
 
-        return ["==", "!=", "contains", "!contains"];
+        return ["is", "isn't", "contains", "!contains"];
     }
 
     needValues(parsedCategory: string, parsedOperator: string): any[] {

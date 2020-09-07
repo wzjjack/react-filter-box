@@ -53,12 +53,13 @@ export default class FilterInput extends React.Component<any, any> {
     }
 
     private onSubmit(text: string) {
-        if (this.submitTimer) clearTimeout(this.submitTimer);
-        this.submitTimer = setTimeout(() => {
-            if (this.props.onSubmit) {
-                this.props.onSubmit(text);
-            }
-        }, 500)
+        // if (this.submitTimer) clearTimeout(this.submitTimer);
+        // this.submitTimer = setTimeout(() => {
+        //     if (this.props.onSubmit) {
+        //         this.props.onSubmit(text);
+        //     }
+        // }, 500)
+        this.props.onSubmit(text);
 
     }
 
@@ -85,7 +86,7 @@ export default class FilterInput extends React.Component<any, any> {
 
         ref.editor.on("changes", () => {
             this.handlePressingAnyCharacter();
-            this.onSubmit(this.doc.getValue());
+            // this.onSubmit(this.doc.getValue());
         })
 
         ref.editor.on("focus", (cm, e?) => {
@@ -94,12 +95,14 @@ export default class FilterInput extends React.Component<any, any> {
         })
 
         ref.editor.on("blur", (cm, e?) => {
-            this.onSubmit(this.doc.getValue());
-            this.props.onBlur(e)
+            setTimeout(() => {
+                this.onSubmit(this.doc.getValue());
+                this.props.onBlur(e);
+            }, 300)
         })
 
         ref.editor.on("keyup", (cm: ExtendedCodeMirror, e?: KeyboardEvent) => {
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13 || e.keyCode == 32) {
                 this.onSubmit(this.doc.getValue());
             }
         });

@@ -15,8 +15,8 @@ export default class SimpleResultProcessing extends BaseResultProcessing {
     filter(row: any, fieldOrLabel: string, operator: string, value: string) {
         var field = this.tryToGetFieldCategory(fieldOrLabel);
         switch (operator) {
-            case "==": return row[field] == value;
-            case "!=": return row[field] != value;
+            case "is": return row[field] == value;
+            case "isn't": return row[field] != value;
             case "contains": return _.toLower(row[field]).indexOf(_.toLower(value)) >= 0;
             case "!contains": return _.toLower(row[field]).indexOf(_.toLower(value)) < 0;
         }
