@@ -12,6 +12,9 @@ class GrammarUtils {
     findLastSeparatorIndex(text: string) {
         return _.findLastIndex(text, f => this.isSeparator(f));
     }
+    findFirstSeparatorIndex(text: string) {
+        return _.findIndex(text, f => this.isSeparator(f));
+    }
 
     needSpaceAfter(char: string) {
         return !(char == "(");

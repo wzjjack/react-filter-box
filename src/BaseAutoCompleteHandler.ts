@@ -7,9 +7,9 @@ import ParseTrace from "./ParseTrace";
 
 export default class BaseAutoCompleteHandler {
     quote(text: string) {
-        if (/\s/g.test(text)) {
-            return `"${text}"`;
-        }
+        // if (/\s/g.test(text)) {
+        //     return `"${text}"`;
+        // }
 
         return text;
     }
@@ -29,7 +29,6 @@ export default class BaseAutoCompleteHandler {
     }
 
     handleParseError(parser: ExtendedParser, parseTrace: ParseTrace, error: PEG.PegjsError): HintInfo[] {
-
         var trace = parseTrace;
         return _.flatMap(error.expected, (f: PEG.ExpectedItem) => {
             var result: HintInfo[] = [];
@@ -59,11 +58,11 @@ export default class BaseAutoCompleteHandler {
 
     hasCategory(category: string): boolean {
         return false;
-    } 
+    }
 
     hasOperator(category: string, operator: string): boolean {
         return false;
-    } 
+    }
 
     needCategories(): string[] {
         return []

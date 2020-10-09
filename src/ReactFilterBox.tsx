@@ -95,7 +95,7 @@ export default class ReactFilterBox extends React.Component<any, any> {
             className += " error"
         }
 
-        return <div className={className}>
+        return <div className={className} id='react-filter-box' style={{position:'relative'}}>
             <span className='search-filter-text'>Search & Filter:</span>
             <FilterInput
                 autoCompletePick={this.props.autoCompletePick}
@@ -104,6 +104,7 @@ export default class ReactFilterBox extends React.Component<any, any> {
                 onFocus={this.onFocus.bind(this)}
                 value={this.props.query}
                 needAutoCompleteValues={this.needAutoCompleteValues.bind(this)}
+                autoPickContainer={this.props.autoPickContainer}
                 onSubmit={this.onSubmit.bind(this)}
                 onChange={this.onChange.bind(this)}
                 editorConfig={this.props.editorConfig} />

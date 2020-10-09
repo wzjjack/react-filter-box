@@ -11,6 +11,7 @@ import { UnControlled as ReactCodeMirror, IInstance } from 'react-codemirror2'
 import grammarUtils from "./GrammarUtils";
 import { ExtendedCodeMirror } from "./models/ExtendedCodeMirror";
 import AutoCompletePopup from "./AutoCompletePopup";
+import GridDataAutoCompleteHandler from "./GridDataAutoCompleteHandler";
 
 export default class FilterInput extends React.Component<any, any> {
     options: CodeMirror.EditorConfiguration;
@@ -71,12 +72,18 @@ export default class FilterInput extends React.Component<any, any> {
 
         this.codeMirror = ref.editor;
         this.doc = ref.editor.getDoc();
-        this.autoCompletePopup = new AutoCompletePopup(this.codeMirror, (text) => {
+        this.autoCompletePopup = new AutoCompletePopup(this.codeMirror,this.props.autoPickContainer, (text) => {
             return this.props.needAutoCompleteValues(this.codeMirror, text);
         })
 
         this.autoCompletePopup.customRenderCompletionItem = this.props.customRenderCompletionItem;
         this.autoCompletePopup.pick = this.props.autoCompletePick;
+        if (this.props.autoCompletePick) {
+            this.autoCompletePopup.operators = this.props.autoCompletePick.needOperators(null);
+        } else {
+            this.autoCompletePopup.operators = new GridDataAutoCompleteHandler([], []).needOperators(null);
+        }
+
 
         ref.editor.on("beforeChange", function (instance, change) {
             var newtext = change.text.join("").replace(/\n/g, ""); // remove ALL \n !
@@ -84,7 +91,15 @@ export default class FilterInput extends React.Component<any, any> {
             return true;
         });
 
-        ref.editor.on("changes", () => {
+        ref.editor.on("changes", (instance, changes) => {
+            var lastChange = changes[changes.length - 1] as any;
+            var text = lastChange.text[0];
+            if (text.substring(text.length - 2) == '""') {
+                this.doc.setCursor({
+                    line: lastChange.from.line,
+                    ch: lastChange.from.ch + text.length - 1
+                })
+            }
             this.handlePressingAnyCharacter();
             // this.onSubmit(this.doc.getValue());
         })

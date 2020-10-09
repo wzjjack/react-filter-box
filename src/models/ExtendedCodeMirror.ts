@@ -15,6 +15,7 @@ export interface HintFunc {
 export class HintOptions {
     hint: HintFunc;
     completeSingle: boolean = false;
+    container: any;
     hintValues: HintInfo[] = [];
 }
 

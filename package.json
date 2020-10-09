@@ -80,7 +80,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "codemirror": "^5.42.0",
+    "codemirror": "^5.58.1",
     "lodash": "^4.17.19",
     "pegjs": "^0.10.0",
     "react": "^16.6.3",
