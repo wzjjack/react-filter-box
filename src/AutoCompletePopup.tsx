@@ -185,6 +185,10 @@ export default class AutoCompletePopup {
             }
             var values = hintValues;
             var type = hintValues && hintValues[0] && hintValues[0].type;
+            if (!cursorInSection && text.includes('"')) {
+                text = text.trim();
+                text = text.substring(1, text.length - 1);
+            }
             if (text) {
                 values = _.filter(hintValues, f => {
                     var value = f.value as string;

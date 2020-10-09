@@ -37,9 +37,6 @@ export default class FilterQueryParser {
     }
 
     getSuggestions(query: string): HintInfo[] {
-        if (query[query.length - 1] == '"') { // if cursor behind the ", do not show up auto pick popup
-            return [];
-        }
         query = grammarUtils.stripEndWithNonSeparatorCharacters(query);
         try {
             this.parseQuery(query);
