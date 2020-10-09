@@ -163,7 +163,6 @@ export default class AutoCompletePopup {
 
         this.cm.showHint(this.hintOptions);
         this.completionShow = true;
-        var ttt = this.cm.getInputField().ownerDocument as any;
     }
 
 

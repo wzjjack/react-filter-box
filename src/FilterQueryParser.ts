@@ -37,15 +37,16 @@ export default class FilterQueryParser {
     }
 
     getSuggestions(query: string): HintInfo[] {
+        if (query[query.length - 1] == '"') { // if cursor behind the ", do not show up auto pick popup
+            return [];
+        }
         query = grammarUtils.stripEndWithNonSeparatorCharacters(query);
         try {
             this.parseQuery(query);
             if (!query || grammarUtils.isLastCharacterWhiteSpace(query)) {
                 return _.map(["AND", "OR"], f => { return { value: f, type: "literal" } });
             }
-
             return [];
-
         } catch (ex) {
             return this.autoCompleteHandler.handleParseError(parser, this.parseTrace, ex);
         }
